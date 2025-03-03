@@ -45,7 +45,7 @@ jobs:
         with:
           build-type: ${{ matrix.build-type }}
           ros: |
-            apt: ros-base
+            apt: ros-base visualization-msgs
       - name: Colcon build
         uses: jrl-umi3218/github-actions/build-colcon-project@master
         with:

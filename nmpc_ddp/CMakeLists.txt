@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.14)
 
 set(PROJECT_NAME nmpc_ddp)
 set(PROJECT_GENERATED_HEADERS_SKIP_DEPRECATED ON)
@@ -25,7 +25,11 @@ else()
 endif()
 
 if(NOT NMPC_STANDALONE)
+  find_package(ament_cmake REQUIRED)
   find_package(rclcpp REQUIRED)
+  ament_package()
+else()
+  set(BUILD_TESTING OFF)
 endif()
 
 # Eigen
@@ -34,12 +38,6 @@ if(Eigen3_FOUND)
   add_project_dependency(Eigen3 REQUIRED NO_CMAKE_PACKAGE_REGISTRY)
 else()
   add_project_dependency(Eigen3 MODULE REQUIRED)
-endif()
-
-if(NOT NMPC_STANDALONE)
-  ament_package()
-else()
-  set(BUILD_TESTING OFF)
 endif()
 
 add_library(nmpc_ddp INTERFACE)

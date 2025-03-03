@@ -6,6 +6,7 @@ project(NMPC)
 
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(INSTALL_DOCUMENTATION "Generate and install the documentation" OFF)
+option(NMPC_STANDALONE "Build NPMC as standalone" ON)
 
 # Set a default build type to 'RelwithDebInfo' if none was specified
 IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES AND NOT ENV{CMAKE_BUILD_TYPE})
@@ -13,9 +14,6 @@ IF(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES AND NOT ENV{CMAKE_BUIL
   # Set the possible values of build type for cmake-gui
   set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
 ENDIF()
-
-include(CTest)
-enable_testing()
 
 # Check if the install prefix is writable by the current user and set SUDO_CMD accordingly
 set(SUDO_CMD)
@@ -54,7 +52,7 @@ function(add_nmpc_project NAME)
       -DINSTALL_DOCUMENTATION=${INSTALL_DOCUMENTATION}
       -DBUILD_TESTING=${BUILD_TESTING}
       -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX}
-      -DNMPC_STANDALONE=ON
+      -DNMPC_STANDALONE=${NMPC_STANDALONE}
     TEST_COMMAND ctest -C $<CONFIG>
     INSTALL_COMMAND ${SUDO_CMD} ${CMAKE_COMMAND} --build ${CMAKE_CURRENT_BINARY_DIR}/${NAME} --target install --config $<CONFIG>
     USES_TERMINAL_INSTALL TRUE

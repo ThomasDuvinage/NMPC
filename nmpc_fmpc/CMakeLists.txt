@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required(VERSION 3.14)
 
 set(PROJECT_NAME nmpc_fmpc)
 set(PROJECT_GENERATED_HEADERS_SKIP_DEPRECATED ON)
@@ -25,12 +25,22 @@ else()
 endif()
 
 if(NOT NMPC_STANDALONE)
+  find_package(ament_cmake REQUIRED)
+  find_package(rclcpp REQUIRED)
+  find_package(std_srvs REQUIRED)
+  find_package(visualization_msgs REQUIRED)
+
   find_package(nmpc_ddp REQUIRED)
 
   # Eigen
   find_package(Eigen3 REQUIRED)
   include_directories(${EIGEN3_INCLUDE_DIR})
 
+  include_directories(include ${ament_INCLUDE_DIRS})
+  link_directories(${ament_LIBRARY_DIRS})
+
+  ament_export_dependencies(launch_testing_ament_cmake)
+  ament_export_dependencies(ament_cmake_gtest)
   ament_package()
 else()
   set(BUILD_TESTING OFF)
